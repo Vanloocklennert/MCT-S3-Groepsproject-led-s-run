@@ -15,6 +15,8 @@ namespace Leds_Run.views
         public ListWorkouts()
         {
             InitializeComponent();
+
+            int i = 0;
         }
     }
 }
