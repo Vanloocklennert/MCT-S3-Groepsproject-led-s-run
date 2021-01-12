@@ -1,12 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Leds_Run.views.ListWorkouts">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+             x:Class="Leds_Run.views.ListWorkouts"
+             Title="Workouts">
+    
+    
+    <StackLayout BackgroundColor="White" Spacing="1">
+
+        <Label Text="Custom Workouts" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
+        <Button ImageSource="button_add_interval" BackgroundColor="White" HorizontalOptions="Start"/>
+        
+        <!-- HIER KOMT LISTVIEW MET DATABASE DATA -->
+                                    
+        <Label Text="Default Workouts" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
+
+        <Frame>
+            <Label Text="5 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+        <Frame>
+            <Label Text="10 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+        <Frame>
+            <Label Text="15 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+
+        <Label Text="Challenges" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
+        <Frame>
+            <Label Text="Tiger" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+        <Frame>
+            <Label Text="Usain Bolt" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+        <Frame>
+            <Label Text="Challenge Leaderboard" TextColor="#212121" BackgroundColor="White" FontSize="14" />
+        </Frame>
+
+    </StackLayout>
+
+
 </ContentPage>

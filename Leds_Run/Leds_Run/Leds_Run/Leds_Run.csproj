@@ -17,7 +17,12 @@
 
   <ItemGroup>
     <Folder Include="models\" />
-    <Folder Include="views\" />
     <Folder Include="repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="views\ListWorkouts.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
