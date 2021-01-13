@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18">
+  <g id="Leaderbord_icon" data-name="Leaderbord icon" transform="translate(-298 -46)">
+    <g id="Rectangle_264" data-name="Rectangle 264" transform="translate(298 51)" fill="#fff" stroke="#004cfc" stroke-width="1">
+      <rect width="6" height="13" stroke="none"/>
+      <rect x="0.5" y="0.5" width="5" height="12" fill="none"/>
+    </g>
+    <g id="Rectangle_265" data-name="Rectangle 265" transform="translate(303 46)" fill="#fff" stroke="#004cfc" stroke-width="1">
+      <rect width="6" height="18" stroke="none"/>
+      <rect x="0.5" y="0.5" width="5" height="17" fill="none"/>
+    </g>
+    <g id="Rectangle_266" data-name="Rectangle 266" transform="translate(308 54)" fill="#fff" stroke="#004cfc" stroke-width="1">
+      <rect width="6" height="10" stroke="none"/>
+      <rect x="0.5" y="0.5" width="5" height="9" fill="none"/>
+    </g>
+  </g>
+</svg>

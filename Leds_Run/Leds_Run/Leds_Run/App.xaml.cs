@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Leds_Run.views;
 
 namespace Leds_Run
 {
@@ -10,7 +11,7 @@ namespace Leds_Run
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new StartPage();
         }
 
         protected override void OnStart()
