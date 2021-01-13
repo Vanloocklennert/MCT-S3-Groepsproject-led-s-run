@@ -11,7 +11,7 @@ namespace Leds_Run
         {
             InitializeComponent();
 
-            MainPage = new StartPage();
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()
