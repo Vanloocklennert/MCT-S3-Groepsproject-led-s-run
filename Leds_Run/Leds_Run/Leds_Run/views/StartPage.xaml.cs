@@ -31,7 +31,7 @@ namespace Leds_Run.views
 
         private void NewWorkout_Clicked(object sender, EventArgs e)
         {
-            //naar de new workout pagina gaan.
+            Navigation.PushAsync(new ListWorkouts());
         }
 
         private void ImgLeaderboard_Clicked(object sender, EventArgs e)
