@@ -12,7 +12,7 @@ namespace Leds_Run
             InitializeComponent();
 
             //MainPage = new MainPage();
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new ListWorkouts());
         }
 
         protected override void OnStart()

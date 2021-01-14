@@ -13,9 +13,7 @@ namespace Leds_Run
     {
         public MainPage()
         {
-            InitializeComponent();
-
-            Navigation.PushAsync(new NavigationPage(new ListWorkouts()));
+            InitializeComponent();            
         }
     }
 }
