@@ -4,7 +4,17 @@ using System.Text;
 
 namespace Leds_Run.models
 {
-    class Workout
+    public class Workout
     {
+        public List<Interval> Intervals { get; set; }
+
+        public class Interval
+        {
+            public String Name { get; set; }
+            public String Type { get; set; }
+            public double Distance { get; set; }
+            public double Speed { get; set; }
+            public double Time { get; set; }
+        }
     }
 }
