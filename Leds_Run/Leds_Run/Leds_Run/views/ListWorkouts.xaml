@@ -8,30 +8,32 @@
     <StackLayout BackgroundColor="White" Spacing="1">
 
         <Label Text="Custom Workouts" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
-        <Button ImageSource="button_add_interval" BackgroundColor="White" HorizontalOptions="Start"/>
+        <Button ImageSource="button_add_interval" BackgroundColor="White" HorizontalOptions="Start" Clicked="Button_Clicked"/>
         
-        <!-- HIER KOMT LISTVIEW MET DATABASE DATA -->
-                                    
+        <StackLayout x:Name="stckLayoutCustomWorkouts">
+            
+        </StackLayout>
+
         <Label Text="Default Workouts" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
 
-        <Frame>
+        <Frame ClassId="frm5Km">
             <Label Text="5 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
-        <Frame>
+        <Frame ClassId="frm10Km">
             <Label Text="10 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
-        <Frame>
+        <Frame ClassId="frm15Km">
             <Label Text="15 km run" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
 
         <Label Text="Challenges" TextColor="#212121" BackgroundColor="#A0BCFC" FontSize="14" Padding="16, 4"/>
-        <Frame>
+        <Frame ClassId="frmTiger">
             <Label Text="Tiger" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
-        <Frame>
+        <Frame ClassId="frmUsainBolt">
             <Label Text="Usain Bolt" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
-        <Frame>
+        <Frame ClassId="frmChallengeLeaderbord">
             <Label Text="Challenge Leaderboard" TextColor="#212121" BackgroundColor="White" FontSize="14" />
         </Frame>
 
