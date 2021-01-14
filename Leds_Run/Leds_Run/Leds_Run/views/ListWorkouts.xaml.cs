@@ -59,7 +59,7 @@ namespace Leds_Run.views
             }
             else
             {
-                //Navigation.PushAsync(new NavigationPage(new Login()));
+                Navigation.PushAsync(new NavigationPage(new Login()));
             }
         }
     }

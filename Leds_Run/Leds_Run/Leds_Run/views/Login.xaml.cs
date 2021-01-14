@@ -16,5 +16,15 @@ namespace Leds_Run.views
         {
             InitializeComponent();
         }
+
+        private void BtnLogin_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnRegister_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
