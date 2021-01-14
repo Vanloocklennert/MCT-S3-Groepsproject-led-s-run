@@ -25,12 +25,12 @@ namespace Leds_Run.repositories
         }
 
 
-        //public async static Task<List<Leaderboard>> GetLeaderboard()
-        //{
-        //    //Leaderboard opvragen
-        //    List<Leaderboard> Leaderboards = new List<Leaderboard>();
-        //    return List<Leaderboard>
-        //}
+        public async static Task<Leaderboard> GetLeaderboard()
+        {
+            //Leaderboard opvragen
+            Leaderboard Leaderboards = new Leaderboard();
+            return Leaderboards;
+        }
 
     }
 }
