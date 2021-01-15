@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.LeaderboardPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <span>
+                
+            </span>
+            <Grid HeightRequest="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+            </Grid>
+            <Grid BackgroundColor="#A0BCFC" HeightRequest="24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Ranking" Grid.Column="0" HorizontalTextAlignment="Center" />
+                <Label Text="User" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                <Label Text="Time" Grid.Column="2" HorizontalTextAlignment="Center"/>
+                <Label Text="Avg.Speed" Grid.Column="3" HorizontalTextAlignment="Center"    />
+            </Grid>
+            <ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="lblRanking" Grid.Column="0" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblUser" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblTime" Grid.Column="2" HorizontalTextAlignment="End"/>
+                                <Label Text="s" Grid.Column="3" HorizontalTextAlignment="Start"/>
+                                <Label x:Name="lblSpeed" Grid.Column="4" HorizontalTextAlignment="End"/>
+                                <Label Text="km/h" HorizontalOptions="Start" Grid.Column="5"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
