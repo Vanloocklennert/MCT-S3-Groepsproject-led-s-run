@@ -77,7 +77,7 @@ namespace Leds_run_azure_functions
                     {
                         command.Connection = connection;
                         // Make query to select all default workouts (tbldefaultworkouts) with an Inner join to tblworkouts
-                        command.CommandText = "SELECT tbldefaultworkouts.default_id, tblworkouts.type, tblworkouts.name, tblworkouts.distance, tblworkouts.speed, tblworkouts.time FROM tbldefaultworkouts INNER JOIN tblworkouts ON tbldefaultworkouts.workout_id_fk = tblworkouts.workout_id; ";
+                        command.CommandText = "SELECT tbldefaultworkouts.default_id, tblworkouts.type, tblworkouts.name, tblworkouts.distance, tblworkouts.speed, tblworkouts.time FROM tbldefaultworkouts INNER JOIN tblworkouts ON tbldefaultworkouts.workout_id_fk = tblworkouts.workout_id WHERE NOT type='runagainst'";
 
                         SqlDataReader reader = await command.ExecuteReaderAsync();
 
