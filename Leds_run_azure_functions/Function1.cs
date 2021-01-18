@@ -7,29 +7,50 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Leds_run_azure_functions.Models;
+using System.Data.SqlClient;
 
 namespace Leds_run_azure_functions
 {
     public static class Function1
     {
-        [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        [FunctionName("AddUser")]
+        public static async Task<IActionResult> AddUserV1(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/user")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                User newuser = JsonConvert.DeserializeObject<User>(requestBody);
 
-            string name = req.Query["name"];
+                string connectionString = Environment.GetEnvironmentVariable("SQLServer");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = "INSERT INTO tblusers (username, e-mail, passwordhash) VALUES(@username, @email, @passwordhash)";
+                        command.Parameters.AddWithValue("@username", newuser.Username);
+                        command.Parameters.AddWithValue("@email", newuser.EMail);
+                        command.Parameters.AddWithValue("@passwordhash", newuser.PasswordHash);
 
-            return new OkObjectResult(responseMessage);
+                        await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+
+
+                return new OkObjectResult(newuser);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
