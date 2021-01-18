@@ -242,7 +242,6 @@ namespace Leds_run_azure_functions
                                 }
                             }
                         }
-
                     }
                 }
 
