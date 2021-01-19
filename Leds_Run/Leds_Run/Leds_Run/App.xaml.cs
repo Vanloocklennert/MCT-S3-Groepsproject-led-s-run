@@ -12,7 +12,7 @@ namespace Leds_Run
             InitializeComponent();
 
             //MainPage = new MainPage();
-            MainPage = new NavigationPage(new LeaderboardPage());
+            MainPage = new NavigationPage(new StartPage());
         }
 
         protected override void OnStart()
