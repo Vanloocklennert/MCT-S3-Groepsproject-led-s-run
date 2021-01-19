@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Leds_Run.repositories
 {
-    class RepoMqtt
+    public class RepoMqtt
     {
+
     }
 }
