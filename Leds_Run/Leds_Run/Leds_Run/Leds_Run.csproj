@@ -26,12 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="views\LeaderboardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="views\ListWorkouts.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="models\" />
   </ItemGroup>
 </Project>

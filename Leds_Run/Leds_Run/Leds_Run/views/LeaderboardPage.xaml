@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.LeaderboardPage" Title="Leaderboard">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <Grid HeightRequest="600" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Source="top_3_leaderboard"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill"  Grid.Column="0" Grid.ColumnSpan="3" Margin="0,20,0,0"/>
+                <Label x:Name="lblPlace2" Grid.Column="0" VerticalOptions="Center"  HorizontalOptions="Center" Padding="0,40,0,0"/>
+                <Label x:Name="lblPlace1" Grid.Column="1" VerticalOptions="Center"  HorizontalOptions="Center" Padding="0,0,0,40"/>
+                <Label x:Name="lblPlace3" Grid.Column="2" VerticalOptions="Center"  HorizontalOptions="Center" Padding="0,100,0,0"/>
+            </Grid>
+            <Grid BackgroundColor="#A0BCFC" HeightRequest="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Ranking" Grid.Column="0" HorizontalTextAlignment="Center" />
+                <Label Text="User" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                <Label Text="Time" Grid.Column="2" HorizontalTextAlignment="Center"/>
+                <Label Text="Avg.Speed" Grid.Column="3" HorizontalTextAlignment="Center"    />
+            </Grid>
+            <ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="lblRanking" Text="{Binding User_name}" Grid.Column="0" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblUser" Text="{Binding User_name}" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblTime" Text="{Binding User_name}" Grid.Column="2" HorizontalTextAlignment="End"/>
+                                <Label Text="s" Grid.Column="3" HorizontalTextAlignment="Start"/>
+                                <Label x:Name="lblSpeed" Text="{Binding User_name}" Grid.Column="4" HorizontalTextAlignment="End"/>
+                                <Label Text="km/h" HorizontalOptions="Start" Grid.Column="5"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
