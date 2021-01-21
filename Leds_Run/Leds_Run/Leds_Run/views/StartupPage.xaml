@@ -13,15 +13,15 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Text="Your Workout will start soon" FontSize="18" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
             <Image Grid.Row="1" Source="circle" VerticalOptions="CenterAndExpand" />
-            <Label/>
+            <Label x:Name="lblTimer" Text="15" Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" FontSize="60" TextColor="Black"/>
             <Grid Grid.Row="2" Margin="56,0" VerticalOptions="End">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="64"/>
                 </Grid.ColumnDefinitions>
                 <Frame Grid.Column="0" Grid.ColumnSpan="2" BorderColor="#D4E1FF" HasShadow="False"  />
-                <Label Grid.Column="0" Text="Your workout color is pink" FontSize="16" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/>
-                <Frame Margin="16" CornerRadius="100" BackgroundColor="Red" Grid.Column="1" VerticalOptions="Center" />
+                <Label x:Name="lblColor" Grid.Column="0" Text="Your workout color is pink" FontSize="16" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Frame x:Name="frameColor" Margin="16" CornerRadius="100" BackgroundColor="Red" Grid.Column="1" VerticalOptions="Center" />
             </Grid>
             <Label Grid.Row="3"  VerticalOptions="End" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontSize="14">
                 <Label.Text>
