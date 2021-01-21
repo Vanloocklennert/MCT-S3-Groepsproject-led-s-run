@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Leds_run_azure_functions.Models;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Leds_run_azure_functions
 {
@@ -25,21 +26,20 @@ namespace Leds_run_azure_functions
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 User newuser = JsonConvert.DeserializeObject<User>(requestBody);
-
                 string connectionString = Environment.GetEnvironmentVariable("SQLServer");
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
-
+                    
                     using (SqlCommand command = new SqlCommand())
                     {
                         command.Connection = connection;
-                        command.CommandText = "INSERT INTO tblusers (username, e-mail, passwordhash) VALUES(@username, @email, @passwordhash)";
+                        command.CommandText = "INSERT INTO tblusers (username, email, passwordhash) VALUES(@username, @email, @passwordhash)";
                         command.Parameters.AddWithValue("@username", newuser.Username);
                         command.Parameters.AddWithValue("@email", newuser.EMail);
                         command.Parameters.AddWithValue("@passwordhash", newuser.PasswordHash);
-
+                        log.LogInformation("ok");
                         await command.ExecuteNonQueryAsync();
 
                     }
@@ -89,7 +89,11 @@ namespace Leds_run_azure_functions
                             workout.Type = reader["type"].ToString();
                             workout.Distance = double.Parse(reader["distance"].ToString());
                             workout.Speed = double.Parse(reader["speed"].ToString());
-                            workout.Time = TimeSpan.Parse(reader["time"].ToString());
+                            string time = reader["time"].ToString();
+                            if (time != "")
+                            {
+                                workout.Time = TimeSpan.Parse(time);
+                            }
                             workouts.Add(workout);
                         }
 
@@ -141,7 +145,11 @@ namespace Leds_run_azure_functions
                             workout.Type = reader["type"].ToString();
                             workout.Distance = double.Parse(reader["distance"].ToString());
                             workout.Speed = double.Parse(reader["speed"].ToString());
-                            workout.Time = TimeSpan.Parse(reader["time"].ToString());
+                            string time = reader["time"].ToString();
+                            if (time != "")
+                            {
+                                workout.Time = TimeSpan.Parse(time);
+                            }
                             workouts.Add(workout);
                         }
 
@@ -170,6 +178,7 @@ namespace Leds_run_azure_functions
 
             try
             {
+
                 List<Workout> workouts = new List<Workout>(); // List of all workouts
                 List<List<Workout>> groupedWorkouts = new List<List<Workout>>(); // List of workouts with there INTERVALS in it as a list.
 
@@ -184,7 +193,7 @@ namespace Leds_run_azure_functions
                         command.Connection = connection;
                         
 
-                        command.CommandText = "SELECT user_id, username, e-mail FROM tblusers WHERE username=@username";
+                        command.CommandText = "SELECT user_id, username, email FROM tblusers WHERE username=@username";
                         command.Parameters.AddWithValue("@username", username);
 
                         SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -194,6 +203,7 @@ namespace Leds_run_azure_functions
                         {
                             userId = int.Parse(reader["user_id"].ToString());
                         }
+                        reader.Close();
 
                         if (userId != 0)
                         {
@@ -206,7 +216,7 @@ namespace Leds_run_azure_functions
                             while (await reader.ReadAsync())
                             {
                                 Workout workout = new Workout();
-                                workout.Default_Id = int.Parse(reader["default_id"].ToString());
+                                workout.Default_Id = int.Parse(reader["custom_id"].ToString());
                                 workout.Name = reader["name"].ToString();
                                 workout.Type = reader["type"].ToString();
                                 workout.Distance = double.Parse(reader["distance"].ToString());
@@ -255,5 +265,142 @@ namespace Leds_run_azure_functions
             }
 
         }
+
+
+
+
+
+        // Function to Add a new workout for a given user to the DB
+        [FunctionName("AddUserWorkoutV1")]
+        public static async Task<IActionResult> AddUserWorkoutV1(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/{username}/workouts")] HttpRequest req,
+            string username,
+            ILogger log)
+        {
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+                List<Workout> userWorkouts = JsonConvert.DeserializeObject<List<Workout>>(requestBody);
+
+
+                string connectionString = Environment.GetEnvironmentVariable("SQLServer");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+
+                        //Get UserId by searching for username in tblusers
+                        command.CommandText = "SELECT user_id, username FROM tblusers WHERE username=@username";
+                        command.Parameters.AddWithValue("@username", username);
+
+                        SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                        int userId = 0;
+                        while (await reader.ReadAsync())
+                        {
+                            userId = int.Parse(reader["user_id"].ToString());
+                        }
+                        reader.Close();
+                        //------
+                        
+
+                        if (userId != 0)
+                        {
+                            // 1. -- -- -- --
+                            //Create new Custom workout with UserId in tblcustomworkouts
+                            command.CommandText = "INSERT INTO tblcustomworkouts (user_id_fk) OUTPUT INSERTED.custom_id VALUES(@userId)";
+                            command.Parameters.AddWithValue("@userId", userId);
+
+
+                            SqlDataReader readerForId = await command.ExecuteReaderAsync();
+
+                            int customWorkoutId = 0;
+                            while (await readerForId.ReadAsync())
+                            {
+                                customWorkoutId = int.Parse(readerForId["custom_id"].ToString());
+                            }
+                            readerForId.Close();
+                            //------
+
+                            // 2. -- -- -- --
+                            //Create the workout its intervals as different rows in tblworkouts
+                            List<int> workoutIds = new List<int>();
+
+                            string workoutQuery = "INSERT INTO tblworkouts (type, name, distance, speed, time) OUTPUT INSERTED.workout_id VALUES";
+                            for (int i = 0; i < userWorkouts.Count; i++)
+                            {
+                                if (i != (userWorkouts.Count - 1))
+                                {
+                                    workoutQuery = workoutQuery + "('" + userWorkouts[i].Type + "', '" + userWorkouts[i].Name + "', " + userWorkouts[i].Distance.ToString().Replace(',', '.') + ", " + userWorkouts[i].Speed.ToString().Replace(',', '.') + ", '" + userWorkouts[i].Time + "'), ";
+                                }
+                                else
+                                {
+                                    workoutQuery = workoutQuery + "('" + userWorkouts[i].Type + "', '" + userWorkouts[i].Name + "', " + userWorkouts[i].Distance.ToString().Replace(',', '.') + ", " + userWorkouts[i].Speed.ToString().Replace(',', '.') + ", '" + userWorkouts[i].Time + "')";
+                                }
+                            }
+                            command.CommandText = workoutQuery;
+                            readerForId = await command.ExecuteReaderAsync();
+
+                            int workoutId = 0;
+                            while (await readerForId.ReadAsync())
+                            {
+                                workoutId = int.Parse(readerForId["workout_id"].ToString());
+                                workoutIds.Add(workoutId);
+                            }
+                            readerForId.Close();
+
+
+
+                            log.LogInformation("2");
+
+                            //3. -- -- -- --
+                            //Insert an interval into the database
+                            string query = "INSERT INTO tblcustomworkouts_has_tblworkouts (tblcustomworkouts_custom_id, tblworkouts_workout_id) VALUES";
+                            for (int x = 0; x < workoutIds.Count; x++)
+                            {
+                                if (x != (workoutIds.Count - 1))
+                                {
+                                    query = query + "(" + customWorkoutId + ", " + workoutIds[x] + "), ";
+                                }
+                                else
+                                {
+                                    query = query + "(" + customWorkoutId + ", " + workoutIds[x] + ")";
+                                }
+                            }
+
+                            command.CommandText = query;
+                            await command.ExecuteNonQueryAsync();
+                            //------
+                            log.LogInformation("3");
+
+                            return new OkObjectResult(userWorkouts);
+                        }
+                        else
+                        {
+                            //No user found with the used Username
+                            log.LogError("No User found for the given username");
+                            return new StatusCodeResult(404);
+                        }
+                    }
+                }
+
+
+                
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+
+
     }
 }
