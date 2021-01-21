@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.Login"
+             Title="Login">
+    
+    <ContentPage.Content>
+
+        <StackLayout BackgroundColor="White">
+            
+            <StackLayout Spacing="0" Padding="16" BackgroundColor="White" VerticalOptions="Center">
+
+                <Label Text="Login" TextColor="#2969FF" FontSize="48"/>
+                <BoxView Color="#9CB7F6" HeightRequest="4"/>
+
+                <Entry x:Name="Username" Text="Username" TextColor="#212121"/>
+                <BoxView Color="#83A8FE" HeightRequest="1"/>
+
+                <Entry x:Name="Password" Text="Password" TextColor="#212121"/>
+                <BoxView Color="#83A8FE" HeightRequest="1"/>
+
+                <Button x:Name="BtnLogin" Clicked="BtnLogin_Clicked" Text="Login" TextColor="White" BackgroundColor="#2969FF" Margin="0, 16, 16, 0"/>
+                <Button x:Name="BtnRegister" Clicked="BtnRegister_Clicked" Text="Register" TextColor="White" BackgroundColor="#2969FF" Margin="0, 16, 16, 0"/>
+
+
+            </StackLayout>
+        </StackLayout>
+                
+    </ContentPage.Content>
+</ContentPage>
