@@ -33,6 +33,14 @@ namespace Leds_run_azure_functions
                 {
                     await connection.OpenAsync();
                     
+                    if(newuser.Username == null || newuser.EMail == null || newuser.PasswordHash == null)
+                    {
+                        Response response = new Response();
+                        response.Succes = false;
+                        response.Info = "Error: Not enough parameters given! (username, email, passwordhash)";
+                        return new BadRequestObjectResult(response); // 400
+                    }
+
                     using (SqlCommand command = new SqlCommand())
                     {
                         command.Connection = connection;
@@ -40,7 +48,7 @@ namespace Leds_run_azure_functions
                         command.Parameters.AddWithValue("@username", newuser.Username);
                         command.Parameters.AddWithValue("@email", newuser.EMail);
                         command.Parameters.AddWithValue("@passwordhash", newuser.PasswordHash);
-                        log.LogInformation("ok");
+                        //log.LogInformation("ok");
                         await command.ExecuteNonQueryAsync();
 
                     }
@@ -371,6 +379,13 @@ namespace Leds_run_azure_functions
                                 }
                             }
                         }
+                        else
+                        {
+                            Response response = new Response();
+                            response.Succes = false;
+                            response.Info = "The requested user was not found!";
+                            return new BadRequestObjectResult(response); // 400
+                        }
                     }
                 }
 
@@ -398,7 +413,6 @@ namespace Leds_run_azure_functions
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
                 List<Workout> userWorkouts = JsonConvert.DeserializeObject<List<Workout>>(requestBody);
-
 
                 string connectionString = Environment.GetEnvironmentVariable("SQLServer");
 
@@ -499,9 +513,10 @@ namespace Leds_run_azure_functions
                         }
                         else
                         {
-                            //No user found with the used Username
-                            log.LogError("No User found for the given username");
-                            return new StatusCodeResult(404);
+                            Response response = new Response();
+                            response.Succes = false;
+                            response.Info = "The given username was not found!";
+                            return new BadRequestObjectResult(response); // 400
                         }
                     }
                 }
@@ -528,6 +543,14 @@ namespace Leds_run_azure_functions
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 Leaderboard newLeaderboardEntry = JsonConvert.DeserializeObject<Leaderboard>(requestBody);
+                
+                if(newLeaderboardEntry.Username == null || newLeaderboardEntry.Time == null || newLeaderboardEntry.Distance == 0 || newLeaderboardEntry.Speed == 0)
+                {
+                    Response response = new Response();
+                    response.Succes = false;
+                    response.Info = "Error: Not enough parameters given! (username, time, distance, speed)";
+                    return new BadRequestObjectResult(response); // 400
+                }
 
                 string connectionString = Environment.GetEnvironmentVariable("SQLServer");
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -558,6 +581,59 @@ namespace Leds_run_azure_functions
             }
         }
 
-        
+        // Function to GET all Leaderboard Entries out of the DB
+        [FunctionName("GetLeaderboardEntriesV1")]
+        public static async Task<IActionResult> GetLeaderboardEntriesV1(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/leaderboard")] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                List<Leaderboard> leaderboardEntries = new List<Leaderboard>();
+
+
+                string connectionString = Environment.GetEnvironmentVariable("SQLServer");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        // Make query to select all default workouts (tbldefaultworkouts) with an Inner join to tblworkouts
+                        command.CommandText = "SELECT leaderboard_id, username, time, distance, speed, datetime FROM tblleaderboard";
+
+                        SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                        while (await reader.ReadAsync())
+                        {
+                            Leaderboard leaderboardEntry = new Leaderboard();
+                            leaderboardEntry.LeaderboardId = int.Parse(reader["leaderboard_id"].ToString());
+                            leaderboardEntry.Username = reader["username"].ToString();
+                            leaderboardEntry.Distance = double.Parse(reader["distance"].ToString());
+                            leaderboardEntry.Speed = double.Parse(reader["speed"].ToString());
+                            leaderboardEntry.DateTime = DateTime.Parse(reader["datetime"].ToString());
+                            string time = reader["time"].ToString();
+                            if (time != "")
+                            {
+                                leaderboardEntry.Time = TimeSpan.Parse(time);
+                            }
+                            leaderboardEntries.Add(leaderboardEntry);
+                        }
+
+                    }
+                }
+
+                return new OkObjectResult(leaderboardEntries);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+
+        }
     }
 }
