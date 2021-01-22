@@ -165,6 +165,7 @@ namespace Leds_run_azure_functions
             try
             {
                 List<Workout> workouts = new List<Workout>();
+                
 
                 string connectionString = Environment.GetEnvironmentVariable("SQLServer");
 
@@ -199,8 +200,17 @@ namespace Leds_run_azure_functions
                     }
                 }
 
+                // NOT NECESSARY but done for Frontend ease
+                List<List<Workout>> groupedWorkouts = new List<List<Workout>>(); // List of workouts with there INTERVALS in it as a list.
 
-                return new OkObjectResult(workouts);
+                for (int i = 0; i < workouts.Count; i++)
+                {
+                    List<Workout> tempWorkoutList = new List<Workout>();
+                    tempWorkoutList.Add(workouts[i]);
+                    groupedWorkouts.Add(tempWorkoutList);
+                }
+                
+                return new OkObjectResult(groupedWorkouts);
             }
             catch (Exception ex)
             {
@@ -255,8 +265,17 @@ namespace Leds_run_azure_functions
                     }
                 }
 
+                // NOT NECESSARY but done for Frontend ease
+                List<List<Workout>> groupedWorkouts = new List<List<Workout>>(); // List of workouts with there INTERVALS in it as a list.
 
-                return new OkObjectResult(workouts);
+                for (int i = 0; i < workouts.Count; i++)
+                {
+                    List<Workout> tempWorkoutList = new List<Workout>();
+                    tempWorkoutList.Add(workouts[i]);
+                    groupedWorkouts.Add(tempWorkoutList);
+                }
+
+                return new OkObjectResult(groupedWorkouts);
             }
             catch (Exception ex)
             {
@@ -265,6 +284,7 @@ namespace Leds_run_azure_functions
             }
 
         }
+
 
         //--------------------------------------------------- USER WORKOUTS ---------------------------------------------------
         // Function to GET all default Workouts out of the DB
@@ -497,6 +517,47 @@ namespace Leds_run_azure_functions
         }
 
 
+        //--------------------------------------------------- LEADERBOARD ---------------------------------------------------
+        // Function to Add a new Leaderboard Entry to the DB
+        [FunctionName("AddLeaderboardEntryV1")]
+        public static async Task<IActionResult> AddLeaderboardEntryV1(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/leaderboard")] HttpRequest req,
+            ILogger log)
+        {
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                Leaderboard newLeaderboardEntry = JsonConvert.DeserializeObject<Leaderboard>(requestBody);
 
+                string connectionString = Environment.GetEnvironmentVariable("SQLServer");
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandText = "INSERT INTO tblleaderboard (username, time, distance, speed) VALUES(@username, @time, @distance, @speed)";
+                        command.Parameters.AddWithValue("@username", newLeaderboardEntry.Username);
+                        command.Parameters.AddWithValue("@time", newLeaderboardEntry.Time);
+                        command.Parameters.AddWithValue("@distance", newLeaderboardEntry.Distance);
+                        command.Parameters.AddWithValue("@speed", newLeaderboardEntry.Speed);
+                        log.LogInformation("ok");
+                        await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+
+
+                return new OkObjectResult(newLeaderboardEntry);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        
     }
 }
