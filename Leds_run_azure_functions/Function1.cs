@@ -16,10 +16,11 @@ namespace Leds_run_azure_functions
 {
     public static class Function1
     {
+        //------------------------------------------------------ USER ------------------------------------------------------
         // Function to Add a new user to the DB
         [FunctionName("AddUserV1")]
         public static async Task<IActionResult> AddUserV1(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/user")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/user")] HttpRequest req,
             ILogger log)
         {
             try
@@ -56,10 +57,108 @@ namespace Leds_run_azure_functions
         }
 
 
+        // Function to Know if a User may be logged in or not POST
+        [FunctionName("GetUserLoginPermissionV1")]
+        public static async Task<IActionResult> GetUserLoginPermissionV1(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/userlogin")] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                User userToLogin = JsonConvert.DeserializeObject<User>(requestBody); // user given in the JSON
+
+                User userFromDB = new User(); //User you recieve as a result by searching userToLogin in DB
+
+                Response response = new Response();
+                response.Succes = false;
+
+                string connectionString = Environment.GetEnvironmentVariable("SQLServer");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+
+                        bool requiredParams = false;
+                        // Make query depending on given credentials to search for the user
+                        if((userToLogin.Username != null) && (userToLogin.PasswordHash != null))
+                        {
+                            command.CommandText = "SELECT user_id, username, email, passwordhash FROM tblusers WHERE username=@username";
+                            command.Parameters.AddWithValue("@username", userToLogin.Username);
+                            requiredParams = true;
+                        }
+                        else if ((userToLogin.EMail != null) && (userToLogin.PasswordHash != null))
+                        {
+                            command.CommandText = "SELECT user_id, username, email, passwordhash FROM tblusers WHERE email=@email";
+                            command.Parameters.AddWithValue("@email", userToLogin.Username);
+                            requiredParams = true;
+                        }
+
+                        //are all required parameters given in the Json
+                        if (requiredParams == true)
+                        {
+                            SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                            while (await reader.ReadAsync())
+                            {
+                                userFromDB.User_Id = int.Parse(reader["user_id"].ToString());
+                                userFromDB.Username = reader["username"].ToString();
+                                userFromDB.EMail = reader["email"].ToString();
+                                userFromDB.PasswordHash = reader["passwordhash"].ToString();
+                            }
+                            reader.Close();
+
+                            //see if user exists
+                            if(userFromDB.User_Id != 0)
+                            {
+                                //Is it a correct Login?
+                                if(userFromDB.PasswordHash == userToLogin.PasswordHash)
+                                {
+                                    response.Succes = true;
+                                    response.Info = "User may log in!";
+                                }
+                                else
+                                {
+                                    response.Info = "User found but wrong credentials!";
+                                    return new BadRequestObjectResult(response); // 400
+                                }
+                            }
+                            else
+                            {
+                                response.Info = "User not found!";
+                                return new BadRequestObjectResult(response); // 400
+                            }
+                        }
+                        else
+                        {
+                            response.Info = "You did not return all necessary parameters!";
+                            return new BadRequestObjectResult(response); // 400
+                        }
+                        
+                    }
+                }
+
+                return new OkObjectResult(response); // 200
+
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+
+        }
+
+        //-------------------------------------------------- Default Workouts --------------------------------------------------
         // Function to GET all default Workouts out of the DB
         [FunctionName("GetDefaultWorkoutsV1")]
         public static async Task<IActionResult> GetDefaultWorkoutsV1(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/workouts")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/workouts")] HttpRequest req,
             ILogger log)
         {
 
@@ -112,10 +211,10 @@ namespace Leds_run_azure_functions
         }
 
 
-        // Function to GET all default Workouts out of the DB
+        // Function to GET all default challenges out of the DB
         [FunctionName("GetChallengesV1")]
         public static async Task<IActionResult> GetChallengesV1(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/challenges")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/challenges")] HttpRequest req,
             ILogger log)
         {
 
@@ -167,11 +266,11 @@ namespace Leds_run_azure_functions
 
         }
 
-
+        //--------------------------------------------------- USER WORKOUTS ---------------------------------------------------
         // Function to GET all default Workouts out of the DB
         [FunctionName("GetUserWorkoutsV1")]
         public static async Task<IActionResult> GetUserWorkoutsV1(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/{username}/workouts")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/{username}/workouts")] HttpRequest req,
             string username,
             ILogger log)
         {
@@ -267,13 +366,10 @@ namespace Leds_run_azure_functions
         }
 
 
-
-
-
         // Function to Add a new workout for a given user to the DB
         [FunctionName("AddUserWorkoutV1")]
         public static async Task<IActionResult> AddUserWorkoutV1(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v1/{username}/workouts")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/{username}/workouts")] HttpRequest req,
             string username,
             ILogger log)
         {
