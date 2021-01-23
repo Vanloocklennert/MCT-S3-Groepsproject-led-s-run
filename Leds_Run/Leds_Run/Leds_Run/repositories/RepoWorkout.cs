@@ -52,14 +52,76 @@ namespace Leds_Run.repositories
                 }
             }
         }
+        public async static Task<List<Workout.Interval>> GetChallenges()
+        {
+            //default challenges opvragen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "challenges";
+                    string json = await client.GetStringAsync(url);
 
-        public async static Task<List<Workout>> GetCostumWorkouts()
+                    if (json != null)
+                    {
+                        List<List<Workout.Interval>> challenges = JsonConvert.DeserializeObject<List<List<Workout.Interval>>>(json);
+                        List<Workout.Interval> challengeList = new List<Workout.Interval>();
+                        foreach (List<Workout.Interval> challenge in challenges)
+                        {
+                            challengeList.Add(challenge[0]);
+                        }
+                        return challengeList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
+        public async static Task<List<Workout>> GetCostumWorkouts(string id)
         {
             //Costumworkout opvragen
-            List<Workout> workouts = new List<Workout>();
-            return workouts;
-        }
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + $"{id}/workouts";
+                    string json = await client.GetStringAsync(url);
 
+                    if (json != null)
+                    {
+
+                        // some list magic POGGERS. Anders deseriliazed em ni sadge
+                        List<List<Workout.Interval>> intervals = JsonConvert.DeserializeObject<List<List<Workout.Interval>>>(json);
+                        List<Workout> workouts = new List<Workout>();
+
+                        foreach(List<Workout.Interval> workout in intervals)
+                        {
+                            Workout curWorkout = new Workout();
+                            curWorkout.Intervals = workout;
+                            workouts.Add(curWorkout);
+                        }
+
+                        return workouts;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
 
         public async static Task<Leaderboard> GetLeaderboard()
         {
@@ -67,6 +129,5 @@ namespace Leds_Run.repositories
             Leaderboard Leaderboards = new Leaderboard();
             return Leaderboards;
         }
-
     }
 }

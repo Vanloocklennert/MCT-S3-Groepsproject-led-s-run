@@ -10,6 +10,7 @@ namespace Leds_Run.models
     {
         public List<Interval> Intervals { get; set; }
 
+        
         public class Interval
         {
             [JsonProperty(PropertyName = "name")]

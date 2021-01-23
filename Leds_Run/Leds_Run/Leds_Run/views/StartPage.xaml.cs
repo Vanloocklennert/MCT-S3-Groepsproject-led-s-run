@@ -25,22 +25,23 @@ namespace Leds_Run.views
             ImgLeaderboard.ImageSource = ImageSource.FromResource("Leds_Run.Assets.LeaderbordIcon.png");
             Start.Source = ImageSource.FromResource("Leds_Run.Assets.StartButton.png");
             ShowWorkouts();
-            //PckrWorkout.ItemsSource = ;
         }
 
         private async void ShowWorkouts()
-        {
+        {         
             defaultWorkouts = await RepoWorkout.GetDefaultWorkouts();
+            defaultWorkouts.AddRange(await RepoWorkout.GetChallenges());
 
             foreach(Workout.Interval inter in defaultWorkouts)
             {
                 WorkoutNames.Add(inter.Name);
             }
             PckrWorkout.ItemsSource = WorkoutNames;
+            PckrWorkout.SelectedIndex = 0;
         }
         private void Start_Clicked(object sender, EventArgs e)
         {
-            //Kijken wat er geselecteerd is in PckrWorkout en meegeven naar de start workout pagina
+            Navigation.PushAsync(new StartupPage());
         }
 
         private void NewWorkout_Clicked(object sender, EventArgs e)
