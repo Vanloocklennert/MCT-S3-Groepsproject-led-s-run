@@ -17,7 +17,6 @@ namespace Leds_Run.views
         public StartupPage()
         {
             InitializeComponent();
-            
             FillStartUp();
             Timer();
         }
@@ -45,8 +44,7 @@ namespace Leds_Run.views
                 time -= 1;
                 return true;
             });
-            
-        }
 
+        }
     }
 }
