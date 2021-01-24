@@ -136,8 +136,10 @@ namespace Leds_Run.repositories
                     if (json != null)
                     {
                         List<Leaderboard.Entry> entries = JsonConvert.DeserializeObject<List<Leaderboard.Entry>>(json);
-                        Leaderboard leaderboard = new Leaderboard();
-                        leaderboard.entries = entries;
+                        Leaderboard leaderboard = new Leaderboard
+                        {
+                            entries = entries
+                        };
                         return leaderboard;
                     }
                     else
