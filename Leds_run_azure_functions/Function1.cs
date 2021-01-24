@@ -603,7 +603,7 @@ namespace Leds_run_azure_functions
                     {
                         command.Connection = connection;
                         // Make query to select all default workouts (tbldefaultworkouts) with an Inner join to tblworkouts
-                        command.CommandText = "SELECT leaderboard_id, username, time, distance, speed, datetime FROM tblleaderboard";
+                        command.CommandText = "SELECT leaderboard_id, username, time, distance, speed, datetime FROM tblleaderboard ORDER BY time ASC";
 
                         SqlDataReader reader = await command.ExecuteReaderAsync();
 
