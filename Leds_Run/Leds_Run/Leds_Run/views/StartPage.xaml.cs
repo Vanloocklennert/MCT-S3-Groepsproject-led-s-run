@@ -22,8 +22,6 @@ namespace Leds_Run.views
         public StartPage()
         {
             InitializeComponent();
-            ImgLeaderboard.ImageSource = ImageSource.FromResource("Leds_Run.Assets.LeaderbordIcon.png");
-            Start.Source = ImageSource.FromResource("Leds_Run.Assets.StartButton.png");
             ShowWorkouts();
         }
 

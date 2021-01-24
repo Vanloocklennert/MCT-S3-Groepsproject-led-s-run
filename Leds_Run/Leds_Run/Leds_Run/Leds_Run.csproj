@@ -11,16 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\LeaderbordIcon.png" />
-    <None Remove="Assets\StartButton.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\LeaderbordIcon.png" />
-    <EmbeddedResource Include="Assets\StartButton.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MQTTnet" Version="3.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
