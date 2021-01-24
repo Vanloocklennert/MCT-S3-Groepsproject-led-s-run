@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Leds_Run.models;
+using Leds_Run.repositories;
 
 namespace Leds_Run.views
 {
@@ -15,6 +17,12 @@ namespace Leds_Run.views
         public LeaderboardPage()
         {
             InitializeComponent();
+            ShowLeaderboard();
+        }
+
+        private async void ShowLeaderboard()
+        {
+            Leaderboard leaderboard = await RepoWorkout.GetLeaderboard();
         }
     }
 }
