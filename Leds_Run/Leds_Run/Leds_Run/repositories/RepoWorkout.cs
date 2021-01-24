@@ -126,8 +126,31 @@ namespace Leds_Run.repositories
         public async static Task<Leaderboard> GetLeaderboard()
         {
             //Leaderboard opvragen
-            Leaderboard Leaderboards = new Leaderboard();
-            return Leaderboards;
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "/leaderboard";
+                    string json = await client.GetStringAsync(url);
+
+                    if (json != null)
+                    {
+                        List<Leaderboard.Entry> entries = JsonConvert.DeserializeObject<List<Leaderboard.Entry>>(json);
+                        Leaderboard leaderboard = new Leaderboard();
+                        leaderboard.entries = entries;
+                        return leaderboard;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
+            }
         }
     }
 }
