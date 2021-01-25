@@ -248,7 +248,6 @@ namespace Leds_Run.repositories
                 }
             }
         }
-
         public async static Task<bool> CreateLeaderBoardEntry(string username, string time, string distance, string speed)
         {
             //checken of user kan inloggen
