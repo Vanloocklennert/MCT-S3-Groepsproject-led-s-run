@@ -39,11 +39,11 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Label x:Name="lblRanking" Text="{Binding User_name}" Grid.Column="0" HorizontalTextAlignment="Center"/>
-                                <Label x:Name="lblUser" Text="{Binding User_name}" Grid.Column="1" HorizontalTextAlignment="Center"/>
-                                <Label x:Name="lblTime" Text="{Binding User_name}" Grid.Column="2" HorizontalTextAlignment="End"/>
+                                <Label x:Name="lblRanking" Text="{Binding Ranking}" Grid.Column="0" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblUser" Text="{Binding username}" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                <Label x:Name="lblTime" Text="{Binding Time}" Grid.Column="2" HorizontalTextAlignment="End"/>
                                 <Label Text="s" Grid.Column="3" HorizontalTextAlignment="Start"/>
-                                <Label x:Name="lblSpeed" Text="{Binding User_name}" Grid.Column="4" HorizontalTextAlignment="End"/>
+                                <Label x:Name="lblSpeed" Text="{Binding speed}" Grid.Column="4" HorizontalTextAlignment="End"/>
                                 <Label Text="km/h" HorizontalOptions="Start" Grid.Column="5"/>
                             </Grid>
                         </ViewCell>
