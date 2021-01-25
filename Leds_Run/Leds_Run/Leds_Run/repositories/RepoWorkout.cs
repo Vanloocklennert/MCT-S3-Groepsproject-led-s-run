@@ -20,6 +20,7 @@ namespace Leds_Run.repositories
             return client;
         }
 
+        // GETS
         public async static Task<List<Workout.Interval>> GetDefaultWorkouts()
         {
             //default workouts opvragen
@@ -122,7 +123,6 @@ namespace Leds_Run.repositories
                 }
             }
         }
-
         public async static Task<Leaderboard> GetLeaderboard()
         {
             //Leaderboard opvragen
@@ -130,7 +130,7 @@ namespace Leds_Run.repositories
             {
                 try
                 {
-                    string url = endpoint + "/leaderboard";
+                    string url = endpoint + "leaderboard";
                     string json = await client.GetStringAsync(url);
 
                     if (json != null)
@@ -151,6 +151,39 @@ namespace Leds_Run.repositories
                 {
                     Debug.WriteLine(e.Message);
                     return null;
+                }
+            }
+        }
+
+        // POSTS
+        public async static Task<bool> GetUserLogin(string username, string password)
+        {
+            //checken of user kan inloggen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "userlogin";
+                    StringContent content = new StringContent($"{{'username': '{username}','passwordhash':'{password}'}}", Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
+                    string json = await response.Content.ReadAsStringAsync();
+                    Dictionary<string, string> resultObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                    if (resultObject["succes"] == "true")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return false;
                 }
             }
         }
