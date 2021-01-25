@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Leds_Run.models;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,29 +14,54 @@ namespace Leds_Run.views
     public partial class StartWorkoutPage : ContentPage
     {
         bool pause = false;
-        public StartWorkoutPage()
+        TimeSpan totalTime = TimeSpan.FromSeconds(0);
+        Workout workout;
+        Workout.Interval intervals = new Workout.Interval();
+        public StartWorkoutPage(Workout workouts)
         {
+            workout = workouts;
             InitializeComponent();
-            FillStartWorkout();
-            Timer();
+            Timer(workouts);
         }
 
-        private async void FillStartWorkout()
+        private async void FillStartWorkout(Workout.Interval interval)
         {
-            //Frame Collor
+            //Frame Color
+            lblPace.Text = interval.Speed + " km/h";
+            lblDistance.Text = interval.Distance.ToString();
 
             //Title workout
-            Title = "Name Workout";
+            Title = interval.Name;
         }
 
-        private async void Timer()
+        private async void Timer(Workout workout)
         {
             DateTime Start = DateTime.Now;
             TimeSpan time;
+            int loops = workout.Intervals.Count();
+            int loop = 0;
+            bool Workouts = true;
 
-            Device.StartTimer(new TimeSpan(0,0,0,0,5), () =>
+            Device.StartTimer(new TimeSpan(0, 0, 0, 0, 5), () =>
             {
-                if (pause){
+                if (totalTime < time)
+                {
+                    if(Workouts)
+                    {
+                        totalTime += workout.Intervals[loop].Time;
+                        Console.WriteLine(workout.Intervals);
+                        FillStartWorkout(workout.Intervals[loop]);
+                        if (loops <= loop)
+                        {
+                            Workouts = false;
+                            Console.WriteLine("end");
+                        }
+                        loop=+ 1;
+                    }
+                }
+
+                if (pause)
+                {
                     Start = DateTime.Now - time;
                 }
                 else
@@ -44,6 +70,7 @@ namespace Leds_Run.views
 
                     lblTimer.Text = time.Minutes + ":" + time.Seconds + ":" + time.Milliseconds;
                 }
+
                 return true;
             });
 
@@ -74,6 +101,11 @@ namespace Leds_Run.views
         private void btnStop_Clicked(object sender, EventArgs e)
         {
 
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new WorkoutDetail(workout));
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Leds_Run
         public App()
         {
             InitializeComponent();
-
             //MainPage = new MainPage();
             MainPage = new NavigationPage(new StartPage());
         }
