@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Leds_Run.models;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Net;
 
 namespace Leds_Run.repositories
 {
@@ -20,6 +22,7 @@ namespace Leds_Run.repositories
             return client;
         }
 
+        // GETS
         public async static Task<List<Workout.Interval>> GetDefaultWorkouts()
         {
             //default workouts opvragen
@@ -122,7 +125,6 @@ namespace Leds_Run.repositories
                 }
             }
         }
-
         public async static Task<Leaderboard> GetLeaderboard()
         {
             //Leaderboard opvragen
@@ -130,7 +132,7 @@ namespace Leds_Run.repositories
             {
                 try
                 {
-                    string url = endpoint + "/leaderboard";
+                    string url = endpoint + "leaderboard";
                     string json = await client.GetStringAsync(url);
 
                     if (json != null)
@@ -153,6 +155,147 @@ namespace Leds_Run.repositories
                     return null;
                 }
             }
+        }
+
+        // POSTS
+        public async static Task<bool> GetUserLogin(string username, string password)
+        {
+            //checken of user kan inloggen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "userlogin";
+                    StringContent content = new StringContent($"{{'username': '{username}','passwordhash':'{password}'}}", Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
+                    string json = await response.Content.ReadAsStringAsync();
+                    Dictionary<string, string> resultObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                    if (resultObject["succes"] == "true")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return false;
+                }
+            }
+        }
+        public async static Task<bool> CreateUser(string username, string email, string password)
+        {
+            //checken of user kan inloggen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "user";
+                    string passwordHash = Hash(email + password);
+                    StringContent content = new StringContent($"{{'username': '{username}','passwordhash':'{passwordHash}', 'email':'{email}'}}", Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return false;
+                }
+            }
+        }        
+        public async static Task<bool> CreateWorkout(string id, List<Workout> workout)
+        {
+            //checken of user kan inloggen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + $"user{id}/workouts";
+
+                    string json = JsonConvert.SerializeObject(workout);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return false;
+                }
+            }
+        }
+        public async static Task<bool> CreateLeaderBoardEntry(string username, string time, string distance, string speed)
+        {
+            //checken of user kan inloggen
+            using (HttpClient client = await GetClient())
+            {
+                try
+                {
+                    string url = endpoint + "/leaderboard";
+
+                    string json = $@"{{
+                                    'username': '{username}',
+                                    'time': '{time}',
+                                    'distance': {distance},
+                                    'speed': {speed}
+                                    }}";
+
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return false;
+                }
+            }
+        }
+        private static string Hash(string data)
+        {
+
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
+            byte[] hash;
+
+            using (SHA512 shaM = new SHA512Managed())
+            {
+                hash = shaM.ComputeHash(byteData);
+            }
+
+            return Encoding.UTF8.GetString(hash).ToLower();
         }
     }
 }
