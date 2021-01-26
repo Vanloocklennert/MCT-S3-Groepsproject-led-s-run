@@ -48,7 +48,7 @@ namespace Leds_Run.views
                 if (succes)
                 {
                     Application.Current.Properties["user"] = RepoWorkout.Hash(Email.Text + Password.Text);
-                    Navigation.PopAsync();
+                    await Navigation.PopAsync();
                 }
                 else
                 {

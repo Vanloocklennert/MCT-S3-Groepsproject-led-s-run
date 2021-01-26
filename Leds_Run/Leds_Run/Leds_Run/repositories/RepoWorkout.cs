@@ -158,7 +158,7 @@ namespace Leds_Run.repositories
         }
 
         // POSTS
-        public async static Task<bool> GetUserLogin(string username, string password)
+        public async static Task<bool> GetUserLogin(string email, string password)
         {
             //checken of user kan inloggen
             using (HttpClient client = await GetClient())
@@ -166,7 +166,9 @@ namespace Leds_Run.repositories
                 try
                 {
                     string url = endpoint + "userlogin";
-                    StringContent content = new StringContent($"{{'username': '{username}','passwordhash':'{password}'}}", Encoding.UTF8, "application/json");
+
+                    string passwordHash = Hash(email + password);
+                    StringContent content = new StringContent($"{{'email': '{email}','passwordhash':'{passwordHash}'}}", Encoding.UTF8, "application/json");
 
                     var response = await client.PostAsync(url, content);
                     string json = await response.Content.ReadAsStringAsync();
