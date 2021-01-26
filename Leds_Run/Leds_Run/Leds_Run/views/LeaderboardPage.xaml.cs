@@ -45,11 +45,11 @@ namespace Leds_Run.views
                 };
 
                 grid.Children.Add(new Label { Text = i.ToString(), HorizontalTextAlignment = TextAlignment.Center }, 0, 0);
-                grid.Children.Add(new Label { Text = entry.Username, HorizontalTextAlignment = TextAlignment.Center }, 0, 1);
-                grid.Children.Add(new Label { Text = entry.Time.TotalSeconds.ToString(), HorizontalTextAlignment = TextAlignment.End }, 0, 2);
-                grid.Children.Add(new Label { Text = "s", HorizontalTextAlignment = TextAlignment.Start }, 0, 3);
-                grid.Children.Add(new Label { Text = entry.Speed.ToString(), HorizontalTextAlignment = TextAlignment.End }, 0, 4);
-                grid.Children.Add(new Label { Text = "km/h", HorizontalOptions = LayoutOptions.Start }, 0, 5);
+                grid.Children.Add(new Label { Text = entry.Username, HorizontalTextAlignment = TextAlignment.Center }, 1, 0);
+                grid.Children.Add(new Label { Text = entry.Time.TotalSeconds.ToString(), HorizontalTextAlignment = TextAlignment.End }, 2, 0);
+                grid.Children.Add(new Label { Text = "s", HorizontalTextAlignment = TextAlignment.Start }, 3, 0);
+                grid.Children.Add(new Label { Text = entry.Speed.ToString(), HorizontalTextAlignment = TextAlignment.End }, 4, 0);
+                grid.Children.Add(new Label { Text = "km/h", HorizontalOptions = LayoutOptions.Start }, 5, 0);
                 stackDetail.Children.Add(grid);
                 i++;
             }
