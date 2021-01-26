@@ -42,7 +42,7 @@ namespace Leds_Run.views
             Workout workout = new Workout();
             workout.Intervals = new List<Workout.Interval>();
             workout.Intervals.Add(defaultWorkouts[PckrWorkout.SelectedIndex]);
-            Navigation.PushAsync(new StartupPage(workout));
+            Navigation.PushAsync(new StartupPage(workout, EntryUsername.Text));
         }
 
         private void NewWorkout_Clicked(object sender, EventArgs e)

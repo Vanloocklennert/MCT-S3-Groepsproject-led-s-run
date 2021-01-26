@@ -17,11 +17,13 @@ namespace Leds_Run.views
     {
         int time = 15;
         Color color;
-        public StartupPage(Workout workout)
+        string Username;
+        public StartupPage(Workout workout, string username)
         {
             InitializeComponent();
             FillStartUp(workout);
             Timer(workout);
+            Username = username;
         }
 
         private async void FillStartUp(Workout workout)
@@ -64,7 +66,7 @@ namespace Leds_Run.views
 
                     mqtt.PublishMessage(payload, Guid.NewGuid().ToString());
                     
-                    Navigation.PushAsync(new StartWorkoutPage(workout, color));
+                    Navigation.PushAsync(new StartWorkoutPage(workout, color, Username));
                     return false;
                 }
                 lblTimer.Text =time.ToString();
