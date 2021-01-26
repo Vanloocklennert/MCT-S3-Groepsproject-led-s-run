@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:io="clr-namespace:System.IO;assembly=netstandard"
-             x:Class="Leds_Run.views.StartWorkoutPage" >
+             x:Class="Leds_Run.views.StartWorkoutPage" NavigationPage.HasBackButton="False" >
     <ContentPage.Content>
         <StackLayout  Padding="0">
             <Grid VerticalOptions="FillAndExpand">
@@ -22,8 +22,8 @@
                         <RowDefinition Height="45*"/>
                         <RowDefinition Height="1"/>
                     </Grid.RowDefinitions>
-                    <Label Text="02:13" Grid.Column="0" Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center" TextColor="Black" FontSize="30"/>
-                    <Label Text="TIME" Grid.Column="0" Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"/>
+                    <Label x:Name="lblPace" Grid.Column="0" Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center" TextColor="Black" FontSize="30"/>
+                    <Label Text="PACE" Grid.Column="0" Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"/>
                     <Frame x:Name="lblColor" BackgroundColor="Red" WidthRequest="-5" Grid.Column="1" Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center" CornerRadius="30" ></Frame>
                     <Label Text="COLOR" Grid.Column="1" Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"/>
                     <Frame Margin="16,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HasShadow="False" BackgroundColor="#5E8FFF" />
@@ -34,8 +34,8 @@
                         <RowDefinition Height="45*"/>
                         <RowDefinition Height="1"/>
                     </Grid.RowDefinitions>
-                    <Label Text="1.52" FontSize="40" TextColor="Black" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End"/>
-                    <Label Text="KILOMETERS" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
+                    <Label x:Name="lblDistance" FontSize="40" TextColor="Black" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End"/>
+                    <Label Text="METERS" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
                     <Frame Margin="16,0" Grid.Row="2" BackgroundColor="#5E8FFF" HasShadow="False"/>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -46,7 +46,7 @@
                     </Grid.RowDefinitions>
 
                     <Label x:Name="lblTimer" Text="02:30" FontSize="30" TextColor="Black" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End"/>
-                    <Label Text="CURRENT PACE" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
+                    <Label Text="CURRENT TIME" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
                     <Frame Margin="16,0" Grid.Row="2" BackgroundColor="#5E8FFF" HasShadow="False"/>
                 </Grid>
                 <Grid Grid.Row="3" Margin="8,0">
@@ -59,7 +59,7 @@
                     <ImageButton x:Name="btnPause" Clicked="btnPause_Clicked" Source="pausebutton" Grid.Column="1" Margin="8" BackgroundColor="GhostWhite" IsVisible="True" IsEnabled="True" />
                     <ImageButton x:Name="btnStop" Clicked="btnStop_Clicked" Source="stopbutton" Grid.Column="2" Margin="8" BackgroundColor="GhostWhite" IsVisible="false" IsEnabled="False"/>
                 </Grid>
-                <Button Margin="24,16" TextColor="White" BackgroundColor="#2969FF" Text="Workout details" FontSize="18" Grid.Row="4"/>
+                <Button Margin="24,16" TextColor="White" BackgroundColor="#2969FF" Text="Workout details" FontSize="18" Grid.Row="4" Clicked="Button_Clicked"/>
             </Grid>
 
         </StackLayout>

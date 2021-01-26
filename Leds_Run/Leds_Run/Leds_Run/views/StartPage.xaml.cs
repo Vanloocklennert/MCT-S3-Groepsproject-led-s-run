@@ -39,7 +39,9 @@ namespace Leds_Run.views
         }
         private void Start_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new StartupPage());
+            Workout interval = new Workout();
+            interval.Intervals[0].Name = "New workout";
+            Navigation.PushAsync(new StartupPage(interval));
         }
 
         private void NewWorkout_Clicked(object sender, EventArgs e)

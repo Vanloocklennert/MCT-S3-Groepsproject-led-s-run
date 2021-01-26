@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.NewWorkout">
+    <ContentPage.Content>
+        <StackLayout >
+            <Label HeightRequest="24" Padding="16,0,0,0" Text="Training name" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
+            <Entry Margin="16,0,16,0" x:Name="TrainingName" Placeholder="Type a name for your training"/>
+            <Label HeightRequest="24" Padding="16,0,0,0" Text="Intervals" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
+            <ListView VerticalOptions="Start" HasUnevenRows="True" SeparatorVisibility="None" HeightRequest="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="lblTimeDist" Text="{Binding TimeDist}" Grid.Column="0" HorizontalTextAlignment="End"/>
+                                <Label x:Name="lblNumMinMeter" Text="{Binding NumMinMeter}" Grid.Column="1" HorizontalTextAlignment="End"/>
+                                <Label x:Name="lblMinMeter" Text="{Binding MinMeter}" Grid.Column="2" HorizontalTextAlignment="Start"/>
+                                <Label x:Name="lblSpeed" Text="{Binding Speed}" Grid.Column="3" HorizontalTextAlignment="End"/>
+                                <Label Text="km/h" HorizontalOptions="Start" Grid.Column="4"/>
+                                <Button ImageSource="Cross" Grid.Column="5"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button ImageSource="button_add_intervals" HorizontalOptions="Start" BackgroundColor="GhostWhite" Clicked="Button_Clicked"/>
+            <Label HeightRequest="24" Padding="16,0,0,0" Text="Intervals" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
+            <Grid HeightRequest="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="104"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label VerticalOptions="Center" HorizontalOptions="End" Padding="16,0,0,0" Text="Repetitions: " Grid.Column="0" />
+                <Entry x:Name="lblRepet" FontSize="14"  IsEnabled="False" Grid.Column="1" HeightRequest="32"/>
+                <Switch VerticalOptions="Center" HorizontalOptions="End" IsToggled="False" Toggled="Switch_Toggled" OnColor="#5E8FFF" ThumbColor="#004CFC" Grid.Column="2"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

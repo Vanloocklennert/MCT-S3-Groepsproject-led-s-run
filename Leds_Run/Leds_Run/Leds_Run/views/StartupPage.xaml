@@ -26,10 +26,10 @@
             <Label Grid.Row="3"  VerticalOptions="End" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontSize="14">
                 <Label.Text>
 The Workout will start 
-automatically in 5 seconds
+automatically in 15 seconds
                 </Label.Text>
             </Label>
-            <Button HeightRequest="48" WidthRequest="312" Text="StartNow" FontSize="18" Grid.Row="4" Margin="24,16,24,16" TextColor="White"  BackgroundColor="#2969FF"/>
+            <Button HeightRequest="48" WidthRequest="312" Text="StartNow" FontSize="18" Grid.Row="4" Margin="24,16,24,16" TextColor="White" Clicked="Button_Clicked"  BackgroundColor="#2969FF"/>
 
         </Grid>
     </ContentPage.Content>

@@ -14,30 +14,30 @@ namespace Leds_Run.views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StartupPage : ContentPage
     {
-        public StartupPage()
+        int time = 15;
+        public StartupPage(Workout workout)
         {
             InitializeComponent();
-            FillStartUp();
-            Timer();
+            FillStartUp(workout);
+            Timer(workout);
         }
 
-        private async void FillStartUp()
+        private async void FillStartUp(Workout workout)
         {
             //Frame Collor
 
             //labal color
 
             //Title workout
-            Title = "Name Workout";
+            Title = workout.Intervals[0].Name;
         }
-        private async void Timer()
+        private async void Timer(Workout workout)
         {
-            int time = 15;
             Device.StartTimer(new TimeSpan(0, 0, 1), () =>
             {
-                if(time == 0)
+                if(time < 0)
                 {
-                    //Navigation.PushAsync(new StartWorkoutPage());
+                    Navigation.PushAsync(new StartWorkoutPage(workout));
                     return false;
                 }
                 lblTimer.Text =time.ToString();
@@ -45,6 +45,11 @@ namespace Leds_Run.views
                 return true;
             });
 
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            time = 0;
         }
     }
 }

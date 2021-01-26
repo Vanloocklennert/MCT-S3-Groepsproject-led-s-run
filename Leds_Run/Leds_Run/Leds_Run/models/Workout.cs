@@ -26,7 +26,7 @@ namespace Leds_Run.models
             public double Speed { get; set; }
 
             [JsonProperty(PropertyName = "time")]
-            public DateTime Time { get; set; }
+            public TimeSpan Time { get; set; }
         }
     }
 }

@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Leds_Run.models;
-using Leds_Run.repositories;
 
 namespace Leds_Run.views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LeaderboardPage : ContentPage
+    public partial class NewWorkout : ContentPage
     {
-        public LeaderboardPage()
+        public NewWorkout()
         {
             InitializeComponent();
-            ShowLeaderboard();
         }
 
-        private async void ShowLeaderboard()
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
         {
-            Leaderboard leaderboard = await RepoWorkout.GetLeaderboard();
+            lblRepet.IsEnabled = !lblRepet.IsEnabled; 
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            //Add intervall
+
         }
     }
 }
