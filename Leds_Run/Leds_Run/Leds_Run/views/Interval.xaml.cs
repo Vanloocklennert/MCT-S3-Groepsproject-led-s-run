@@ -20,7 +20,7 @@ namespace Leds_Run.views
         private void pcType_SelectedIndexChanged(object sender, EventArgs e)
         {
             EntryDurDis.IsEnabled = true;
-            if (pcType.SelectedItem == "Distance")
+            if (pcType.SelectedItem == "runspeedtime")
             {
                 lblDurDis.Text = "meter";
             }

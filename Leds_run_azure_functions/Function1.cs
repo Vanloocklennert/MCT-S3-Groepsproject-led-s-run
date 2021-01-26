@@ -103,7 +103,7 @@ namespace Leds_run_azure_functions
                         else if ((userToLogin.EMail != null) && (userToLogin.PasswordHash != null))
                         {
                             command.CommandText = "SELECT user_id, username, email, passwordhash FROM tblusers WHERE email=@email";
-                            command.Parameters.AddWithValue("@email", userToLogin.Username);
+                            command.Parameters.AddWithValue("@email", userToLogin.EMail);
                             requiredParams = true;
                         }
 
@@ -298,8 +298,8 @@ namespace Leds_run_azure_functions
         // Function to GET all default Workouts out of the DB
         [FunctionName("GetUserWorkoutsV1")]
         public static async Task<IActionResult> GetUserWorkoutsV1(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/{username}/workouts")] HttpRequest req,
-            string username,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/{passwordhash}/workouts")] HttpRequest req,
+            string passwordhash,
             ILogger log)
         {
 
@@ -320,8 +320,8 @@ namespace Leds_run_azure_functions
                         command.Connection = connection;
                         
 
-                        command.CommandText = "SELECT user_id, username, email FROM tblusers WHERE username=@username";
-                        command.Parameters.AddWithValue("@username", username);
+                        command.CommandText = "SELECT user_id, username, email FROM tblusers WHERE passwordhash=@passwordhash";
+                        command.Parameters.AddWithValue("@passwordhash", passwordhash);
 
                         SqlDataReader reader = await command.ExecuteReaderAsync();
 
@@ -404,8 +404,8 @@ namespace Leds_run_azure_functions
         // Function to Add a new workout for a given user to the DB
         [FunctionName("AddUserWorkoutV1")]
         public static async Task<IActionResult> AddUserWorkoutV1(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/{username}/workouts")] HttpRequest req,
-            string username,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/{passwordhash}/workouts")] HttpRequest req,
+            string passwordhash,
             ILogger log)
         {
             try
@@ -426,8 +426,8 @@ namespace Leds_run_azure_functions
                         command.Connection = connection;
 
                         //Get UserId by searching for username in tblusers
-                        command.CommandText = "SELECT user_id, username FROM tblusers WHERE username=@username";
-                        command.Parameters.AddWithValue("@username", username);
+                        command.CommandText = "SELECT user_id, username FROM tblusers WHERE passwordhash=@passwordhash";
+                        command.Parameters.AddWithValue("@passwordhash", passwordhash);
 
                         SqlDataReader reader = await command.ExecuteReaderAsync();
 
