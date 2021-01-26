@@ -49,10 +49,10 @@ namespace Leds_Run.views
                 }
 
                 grid.Children.Add(new Label { Text = interval.Type }, 0, 0);
-                grid.Children.Add(new Label { Text = typenum, HorizontalOptions = LayoutOptions.End }, 0, 1);
-                grid.Children.Add(new Label { Text = type, HorizontalOptions = LayoutOptions.Start }, 0, 2);
-                grid.Children.Add(new Label { Text = interval.Speed.ToString(), HorizontalOptions = LayoutOptions.End }, 0, 3);
-                grid.Children.Add(new Label { Text = "km/h", HorizontalOptions = LayoutOptions.Start }, 0, 4);
+                grid.Children.Add(new Label { Text = typenum, HorizontalOptions = LayoutOptions.End }, 1, 0);
+                grid.Children.Add(new Label { Text = type, HorizontalOptions = LayoutOptions.Start }, 2, 0);
+                grid.Children.Add(new Label { Text = interval.Speed.ToString(), HorizontalOptions = LayoutOptions.End }, 3, 0);
+                grid.Children.Add(new Label { Text = "km/h", HorizontalOptions = LayoutOptions.Start }, 4, 0);
                 stackInterval.Children.Add(grid);
             }
         }
