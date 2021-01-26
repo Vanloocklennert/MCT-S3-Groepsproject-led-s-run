@@ -99,7 +99,7 @@ namespace Leds_Run.views
 
             if (LoggedInUser() != null)
             {
-                Navigation.PushAsync(new NavigationPage(new NewWorkout()));
+                Application.Current.MainPage.Navigation.PushAsync(new NewWorkout());
             }
             else
             {
