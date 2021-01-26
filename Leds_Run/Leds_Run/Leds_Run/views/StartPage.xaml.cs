@@ -39,9 +39,10 @@ namespace Leds_Run.views
         }
         private void Start_Clicked(object sender, EventArgs e)
         {
-            Workout interval = new Workout();
-            interval.Intervals[0].Name = "New workout";
-            Navigation.PushAsync(new StartupPage(interval));
+            Workout workout = new Workout();
+            workout.Intervals = new List<Workout.Interval>();
+            workout.Intervals.Add(defaultWorkouts[PckrWorkout.SelectedIndex]);
+            Navigation.PushAsync(new StartupPage(workout, EntryUsername.Text));
         }
 
         private void NewWorkout_Clicked(object sender, EventArgs e)

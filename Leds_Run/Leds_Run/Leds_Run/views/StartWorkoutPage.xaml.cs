@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Leds_Run.models;
-
+using Leds_Run.repositories;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,14 +14,18 @@ namespace Leds_Run.views
     public partial class StartWorkoutPage : ContentPage
     {
         bool pause = false;
+        string Username;
         TimeSpan totalTime = TimeSpan.FromSeconds(0);
+        TimeSpan time;
         Workout workout;
         Workout.Interval intervals = new Workout.Interval();
-        public StartWorkoutPage(Workout workouts)
+        public StartWorkoutPage(Workout workouts, Color color, string username)
         {
+            Username = username;
             workout = workouts;
             InitializeComponent();
             Timer(workouts);
+            lblColor.BackgroundColor = color;
         }
 
         private async void FillStartWorkout(Workout.Interval interval)
@@ -37,7 +41,6 @@ namespace Leds_Run.views
         private async void Timer(Workout workout)
         {
             DateTime Start = DateTime.Now;
-            TimeSpan time;
             int loops = workout.Intervals.Count();
             int loop = 0;
             bool Workouts = true;
@@ -51,12 +54,12 @@ namespace Leds_Run.views
                         totalTime += workout.Intervals[loop].Time;
                         Console.WriteLine(workout.Intervals);
                         FillStartWorkout(workout.Intervals[loop]);
+                        loop += 1;
                         if (loops <= loop)
                         {
                             Workouts = false;
                             Console.WriteLine("end");
                         }
-                        loop=+ 1;
                     }
                 }
 
@@ -98,9 +101,17 @@ namespace Leds_Run.views
             btnStop.IsVisible = true;
         }
 
-        private void btnStop_Clicked(object sender, EventArgs e)
+        private async void btnStop_Clicked(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             
+=======
+            if(workout.Intervals[0].Name == "Tiger" || workout.Intervals[0].Name == "Usain Bolt")
+            {
+                string speed = ((double)workout.Intervals[0].Distance / time.Seconds).ToString();
+                await RepoWorkout.CreateLeaderBoardEntry(Username, time.ToString("c"), workout.Intervals[0].Distance.ToString(), speed);
+            }
+>>>>>>> develop
         }
 
         private void Button_Clicked(object sender, EventArgs e)
