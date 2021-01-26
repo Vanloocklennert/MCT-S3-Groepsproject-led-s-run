@@ -191,6 +191,8 @@ namespace Leds_Run.repositories
         }
         public async static Task<bool> CreateUser(string username, string email, string password)
         {
+            bool succes = false;
+
             //checken of user kan inloggen
             using (HttpClient client = await GetClient())
             {
@@ -204,18 +206,16 @@ namespace Leds_Run.repositories
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        succes = true;
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                    return false;
+                    succes = false;
                 }
+
+                return succes;
             }
         }        
         public async static Task<bool> CreateWorkout(string id, List<Workout> workout)
@@ -284,18 +284,23 @@ namespace Leds_Run.repositories
                 }
             }
         }
-        private static string Hash(string data)
+        public static string Hash(string data)
         {
 
             byte[] byteData = Encoding.UTF8.GetBytes(data);
             byte[] hash;
 
-            using (SHA512 shaM = new SHA512Managed())
+            using (SHA256 shaM = new SHA256Managed())
             {
                 hash = shaM.ComputeHash(byteData);
             }
 
-            return Encoding.UTF8.GetString(hash).ToLower();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                builder.Append(hash[i].ToString("x2"));
+            }
+            return builder.ToString();
         }
     }
 }
