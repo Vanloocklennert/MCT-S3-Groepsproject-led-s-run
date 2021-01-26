@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Leds_Run.models;
+using Leds_Run.repositories;
 
 namespace Leds_Run.views
 {
@@ -29,8 +30,12 @@ namespace Leds_Run.views
 
         private void btnAddWorkout_Clicked(object sender, EventArgs e)
         {
-            //add new workout
+            Workout workout = new Workout();
+            workout.Intervals = new List<Workout.Interval>();
+            workout.Intervals.AddRange(ListIntervals);
 
+            //add new workout
+            RepoWorkout.CreateWorkout(Application.Current.Properties["user"].ToString(), workout);
             //go back to start
             Application.Current.MainPage.Navigation.PopAsync();
         }
