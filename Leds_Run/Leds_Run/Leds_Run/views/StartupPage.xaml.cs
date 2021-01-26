@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Leds_Run.models;
-
+using Leds_Run.repositories;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Newtonsoft.Json;
 
 namespace Leds_Run.views
 {
@@ -15,6 +16,7 @@ namespace Leds_Run.views
     public partial class StartupPage : ContentPage
     {
         int time = 15;
+        Color color;
         public StartupPage(Workout workout)
         {
             InitializeComponent();
@@ -24,10 +26,23 @@ namespace Leds_Run.views
 
         private async void FillStartUp(Workout workout)
         {
+
+            List<Color> colorList = new List<Color>
+            {
+                Color.Red,
+                Color.Blue,
+                Color.Green,
+                Color.Cyan,
+                Color.DarkOrange,
+                Color.DarkSeaGreen,
+                Color.Indigo
+            };
+
+            Random random = new Random(); 
+            color = colorList[random.Next(0, 6)];
+
             //Frame Collor
-
-            //labal color
-
+            frameColor.BackgroundColor = color;
             //Title workout
             Title = workout.Intervals[0].Name;
         }
@@ -37,7 +52,19 @@ namespace Leds_Run.views
             {
                 if(time < 0)
                 {
-                    Navigation.PushAsync(new StartWorkoutPage(workout));
+                    RepoMqtt mqtt = new RepoMqtt();
+
+                    List<object> objectList = new List<object> 
+                    {  
+                        color.ToHex(),
+                        workout
+                    };
+
+                    string payload = JsonConvert.SerializeObject(objectList);
+
+                    mqtt.PublishMessage(payload, Guid.NewGuid().ToString());
+                    
+                    Navigation.PushAsync(new StartWorkoutPage(workout, color));
                     return false;
                 }
                 lblTimer.Text =time.ToString();
