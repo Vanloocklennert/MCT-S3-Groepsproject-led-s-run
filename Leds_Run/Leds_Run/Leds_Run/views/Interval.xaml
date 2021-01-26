@@ -39,7 +39,7 @@
                 </StackLayout>
             </Frame>
 
-            <Button Padding="24" BackgroundColor="#2969FF" Text="Save To Workout" FontSize="18" TextColor="White" VerticalOptions="EndAndExpand" Margin="24"/>
+            <Button Padding="24" BackgroundColor="#2969FF" Text="Save To Workout" FontSize="18" TextColor="White" VerticalOptions="EndAndExpand" Margin="24" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

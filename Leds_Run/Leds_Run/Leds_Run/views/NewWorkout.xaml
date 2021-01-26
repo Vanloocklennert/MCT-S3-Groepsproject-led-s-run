@@ -7,6 +7,11 @@
             <Label HeightRequest="24" Padding="16,0,0,0" Text="Training name" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
             <Entry Margin="16,0,16,0" x:Name="TrainingName" Placeholder="Type a name for your training"/>
             <Label HeightRequest="24" Padding="16,0,0,0" Text="Intervals" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
+            <ScrollView>
+                <StackLayout x:Name="stackWorkout">
+                    
+                </StackLayout>
+            </ScrollView>
             <ListView VerticalOptions="Start" HasUnevenRows="True" SeparatorVisibility="None" HeightRequest="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -32,16 +37,7 @@
             </ListView>
             <Button ImageSource="button_add_intervals" HorizontalOptions="Start" BackgroundColor="GhostWhite" Clicked="Button_Clicked"/>
             <Label HeightRequest="24" Padding="16,0,0,0" Text="Intervals" BackgroundColor="#A0BCFC" FontSize="14" TextColor="Black"/>
-            <Grid HeightRequest="50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="104"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Label VerticalOptions="Center" HorizontalOptions="End" Padding="16,0,0,0" Text="Repetitions: " Grid.Column="0" />
-                <Entry x:Name="lblRepet" FontSize="14"  IsEnabled="False" Grid.Column="1" HeightRequest="32"/>
-                <Switch VerticalOptions="Center" HorizontalOptions="End" IsToggled="False" Toggled="Switch_Toggled" OnColor="#5E8FFF" ThumbColor="#004CFC" Grid.Column="2"/>
-            </Grid>
+            <Button x:Name="btnAddWorkout" Padding="24" BackgroundColor="#2969FF" Text="Save Workout" FontSize="18" TextColor="White" VerticalOptions="EndAndExpand" Margin="24" Clicked="btnAddWorkout_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
