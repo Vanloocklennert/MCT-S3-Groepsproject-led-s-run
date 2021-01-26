@@ -103,7 +103,7 @@ namespace Leds_run_azure_functions
                         else if ((userToLogin.EMail != null) && (userToLogin.PasswordHash != null))
                         {
                             command.CommandText = "SELECT user_id, username, email, passwordhash FROM tblusers WHERE email=@email";
-                            command.Parameters.AddWithValue("@email", userToLogin.Username);
+                            command.Parameters.AddWithValue("@email", userToLogin.EMail);
                             requiredParams = true;
                         }
 
