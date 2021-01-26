@@ -16,7 +16,13 @@ namespace Leds_Run.views
         public WorkoutDetail(Workout workout)
         {
             InitializeComponent();
-            foreach(Workout.Interval interval in workout.Intervals)
+            FullDetails(workout);
+            
+        }
+
+        public async void FullDetails(Workout workout)
+        {
+            foreach (Workout.Interval interval in workout.Intervals)
             {
                 Grid grid = new Grid();
                 grid.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -31,22 +37,22 @@ namespace Leds_Run.views
                 };
                 string type;
                 string typenum;
-                if (interval.Type == "runspeedtime") 
-                { 
+                if (interval.Type == "runspeedtime")
+                {
                     type = "min";
                     typenum = interval.Time.TotalMinutes.ToString();
                 }
-                else 
-                { 
+                else
+                {
                     type = "m";
                     typenum = interval.Distance.ToString();
                 }
 
                 grid.Children.Add(new Label { Text = interval.Type }, 0, 0);
-                grid.Children.Add(new Label { Text = typenum, VerticalOptions = LayoutOptions.End }, 0, 1);
-                grid.Children.Add(new Label { Text = type, VerticalOptions = LayoutOptions.Start }, 0, 2);
-                grid.Children.Add(new Label { Text =  interval.Speed.ToString(), VerticalOptions = LayoutOptions.End }, 0, 3);
-                grid.Children.Add(new Label { Text = "km/h", VerticalOptions = LayoutOptions.Start }, 1, 3);
+                grid.Children.Add(new Label { Text = typenum, HorizontalOptions = LayoutOptions.End }, 0, 1);
+                grid.Children.Add(new Label { Text = type, HorizontalOptions = LayoutOptions.Start }, 0, 2);
+                grid.Children.Add(new Label { Text = interval.Speed.ToString(), HorizontalOptions = LayoutOptions.End }, 0, 3);
+                grid.Children.Add(new Label { Text = "km/h", HorizontalOptions = LayoutOptions.Start }, 0, 4);
                 stackInterval.Children.Add(grid);
             }
         }
