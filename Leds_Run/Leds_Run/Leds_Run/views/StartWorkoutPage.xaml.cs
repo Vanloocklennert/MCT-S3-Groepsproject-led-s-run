@@ -17,11 +17,12 @@ namespace Leds_Run.views
         TimeSpan totalTime = TimeSpan.FromSeconds(0);
         Workout workout;
         Workout.Interval intervals = new Workout.Interval();
-        public StartWorkoutPage(Workout workouts)
+        public StartWorkoutPage(Workout workouts, Color color)
         {
             workout = workouts;
             InitializeComponent();
             Timer(workouts);
+            lblColor.BackgroundColor = color;
         }
 
         private async void FillStartWorkout(Workout.Interval interval)
@@ -51,12 +52,12 @@ namespace Leds_Run.views
                         totalTime += workout.Intervals[loop].Time;
                         Console.WriteLine(workout.Intervals);
                         FillStartWorkout(workout.Intervals[loop]);
+                        loop += 1;
                         if (loops <= loop)
                         {
                             Workouts = false;
                             Console.WriteLine("end");
                         }
-                        loop=+ 1;
                     }
                 }
 
