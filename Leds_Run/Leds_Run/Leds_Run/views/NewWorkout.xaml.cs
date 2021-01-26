@@ -25,7 +25,8 @@ namespace Leds_Run.views
         private void Button_Clicked(object sender, EventArgs e)
         {
             //Add intervall
-            Navigation.PushAsync(new Interval());
+            Application.Current.MainPage = new NavigationPage(new NewWorkout());
+            Application.Current.MainPage.Navigation.PushAsync(new Interval());
         }
 
         private void btnAddWorkout_Clicked(object sender, EventArgs e)
