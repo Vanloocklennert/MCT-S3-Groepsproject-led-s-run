@@ -220,7 +220,7 @@ namespace Leds_Run.repositories
                 return succes;
             }
         }        
-        public async static Task<bool> CreateWorkout(string id, List<Workout> workout)
+        public async static Task<bool> CreateWorkout(string id, Workout workout)
         {
             //checken of user kan inloggen
             using (HttpClient client = await GetClient())
