@@ -103,15 +103,12 @@ namespace Leds_Run.views
 
         private async void btnStop_Clicked(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-            
-=======
             if(workout.Intervals[0].Name == "Tiger" || workout.Intervals[0].Name == "Usain Bolt")
             {
                 string speed = ((double)workout.Intervals[0].Distance / time.Seconds).ToString();
                 await RepoWorkout.CreateLeaderBoardEntry(Username, time.ToString("c"), workout.Intervals[0].Distance.ToString(), speed);
             }
->>>>>>> develop
+
         }
 
         private void Button_Clicked(object sender, EventArgs e)
