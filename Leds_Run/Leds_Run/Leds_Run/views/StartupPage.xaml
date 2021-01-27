@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.StartupPage" >
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="36*"/>
+                <RowDefinition Height="11*" />
+                <RowDefinition Height="23*"/>
+                <RowDefinition Height="15*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Text="Your Workout will start soon" FontSize="18" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            <Image Grid.Row="1" Source="circle" VerticalOptions="CenterAndExpand" />
+            <Label x:Name="lblTimer" Text="15" Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" FontSize="60" TextColor="Black"/>
+            <Grid Grid.Row="2" Margin="56,0" VerticalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="64"/>
+                </Grid.ColumnDefinitions>
+                <Frame Grid.Column="0" Grid.ColumnSpan="2" BorderColor="#D4E1FF" HasShadow="False"  />
+                <Label x:Name="lblColor" Grid.Column="0" Text="Your workout color is" FontSize="16" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Frame x:Name="frameColor" Margin="16" CornerRadius="100" BackgroundColor="Red" Grid.Column="1" VerticalOptions="Center" />
+            </Grid>
+            <Label Grid.Row="3"  VerticalOptions="End" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontSize="14">
+                <Label.Text>
+The Workout will start 
+automatically in 15 seconds
+                </Label.Text>
+            </Label>
+            <Button HeightRequest="48" WidthRequest="312" Text="StartNow" FontSize="18" Grid.Row="4" Margin="24,16,24,16" TextColor="White" Clicked="Button_Clicked"  BackgroundColor="#2969FF"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

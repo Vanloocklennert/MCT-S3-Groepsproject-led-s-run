@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Leds_Run.views.Interval" Title="Edit Interval">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="#D4E1FF" Margin="24" Padding="0">
+                <StackLayout HeightRequest="250">
+                    <Label HeightRequest="24" BackgroundColor="#5E8FFF" Padding="16,0,0,0" Text="Type" VerticalOptions="Center"/>
+                    <Picker x:Name="pcType" Margin="16,0,16,0" Title="Type" SelectedIndexChanged="pcType_SelectedIndexChanged">
+                        <Picker.Items>
+                            <x:String>
+                                Distance
+                            </x:String>
+                            <x:String>
+                                Time
+                            </x:String>
+                        </Picker.Items>
+
+                    </Picker>
+                    <Label HeightRequest="24" BackgroundColor="#5E8FFF" Padding="16,0,0,0" Text="Pace" VerticalOptions="Center"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Entry x:Name="EntryPace" Keyboard="Numeric" WidthRequest="30" HorizontalOptions="Start" Margin="16,0,0,0" FontSize="14"/>
+                        <Label Text="km/h" Grid.Column="1" VerticalOptions="Center"/>
+                    </Grid>
+                    <Label HeightRequest="24" BackgroundColor="#5E8FFF" Padding="16,0,0,0" Text="Duration/Distance" VerticalOptions="Center"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Entry x:Name="EntryDurDis" Keyboard="Numeric" WidthRequest="60" Margin="16,0,0,0" Grid.Column="0" FontSize="14" IsEnabled="False"/>
+                        <Label x:Name="lblDurDis" Grid.Column="1" VerticalOptions="Center"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Button Padding="24" BackgroundColor="#2969FF" Text="Save To Workout" FontSize="18" TextColor="White" VerticalOptions="EndAndExpand" Margin="24" Clicked="Button_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

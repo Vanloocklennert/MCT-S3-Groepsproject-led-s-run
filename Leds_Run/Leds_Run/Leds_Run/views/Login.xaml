@@ -15,8 +15,11 @@
 
                 <Entry x:Name="Username" Text="Username" TextColor="#212121"/>
                 <BoxView Color="#83A8FE" HeightRequest="1"/>
+                
+                <Entry x:Name="Email" Text="Email" TextColor="#212121"/>
+                <BoxView Color="#83A8FE" HeightRequest="1"/>
 
-                <Entry x:Name="Password" Text="Password" TextColor="#212121"/>
+                <Entry x:Name="Password" Text="Password" TextColor="#212121" TextChanged="Password_TextChanged"/>
                 <BoxView Color="#83A8FE" HeightRequest="1"/>
 
                 <Button x:Name="BtnLogin" Clicked="BtnLogin_Clicked" Text="Login" TextColor="White" BackgroundColor="#2969FF" Margin="0, 16, 16, 0"/>

@@ -4,7 +4,7 @@
              x:Class="Leds_Run.views.LeaderboardPage" Title="Leaderboard">
     <ContentPage.Content>
         <StackLayout Spacing="0">
-            <Grid HeightRequest="600" >
+            <Grid HeightRequest="300" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -27,29 +27,11 @@
                 <Label Text="Time" Grid.Column="2" HorizontalTextAlignment="Center"/>
                 <Label Text="Avg.Speed" Grid.Column="3" HorizontalTextAlignment="Center"    />
             </Grid>
-            <ListView>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label x:Name="lblRanking" Text="{Binding User_name}" Grid.Column="0" HorizontalTextAlignment="Center"/>
-                                <Label x:Name="lblUser" Text="{Binding User_name}" Grid.Column="1" HorizontalTextAlignment="Center"/>
-                                <Label x:Name="lblTime" Text="{Binding User_name}" Grid.Column="2" HorizontalTextAlignment="End"/>
-                                <Label Text="s" Grid.Column="3" HorizontalTextAlignment="Start"/>
-                                <Label x:Name="lblSpeed" Text="{Binding User_name}" Grid.Column="4" HorizontalTextAlignment="End"/>
-                                <Label Text="km/h" HorizontalOptions="Start" Grid.Column="5"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <ScrollView>
+                <StackLayout x:Name="stackDetail" >
+
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

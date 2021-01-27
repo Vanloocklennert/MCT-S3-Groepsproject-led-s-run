@@ -17,10 +17,10 @@
                     <ColumnDefinition Width="128"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" x:Name="ImgLeaderboard" Text="Leaderboard" TextColor="#000000" FontSize="14" BackgroundColor="White" BorderWidth="0" HeightRequest="18" ContentLayout="right, 8" HorizontalOptions="Start" Padding="2" Clicked="ImgLeaderboard_Clicked"></Button>
+                <ImageButton Grid.Column="1" x:Name="ImgLeaderboard" Source="button_leaderboard" BackgroundColor="White" BorderWidth="0" HorizontalOptions="Start" Padding="2" Clicked="ImgLeaderboard_Clicked"></ImageButton>
             </Grid>
-            <ImageButton x:Name="Start" Grid.Row="1" BackgroundColor="White" Clicked="Start_Clicked" Margin="100,104,100,64"/>
-            <Entry  Grid.Row="2" Margin="120,0,120,40" FontSize="14" Placeholder="Your name" PlaceholderColor="#7D7D7D" />
+            <ImageButton x:Name="Start" Source="start_button" Grid.Row="1" BackgroundColor="White" Clicked="Start_Clicked" Margin="100,104,100,64"/>
+            <Entry  x:Name="EntryUsername"  Grid.Row="2" Margin="120,0,120,40" FontSize="14" Placeholder="Your name" PlaceholderColor="#7D7D7D" />
             <Picker x:Name="PckrWorkout" Title="Select a workout" TextColor="#E4E7E8" Grid.Row="3" Margin="24,0,24,0" />
             <Button x:Name="NewWorkout" Text="Show Workouts" Grid.Row="4" Margin="24,8,24,16" BackgroundColor="#2969FF" TextColor="White" Clicked="NewWorkout_Clicked"/>
         </Grid>

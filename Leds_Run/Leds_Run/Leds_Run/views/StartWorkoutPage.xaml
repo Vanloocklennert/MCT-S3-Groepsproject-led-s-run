@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:io="clr-namespace:System.IO;assembly=netstandard"
+             x:Class="Leds_Run.views.StartWorkoutPage" NavigationPage.HasBackButton="False" >
+    <ContentPage.Content>
+        <StackLayout  Padding="0">
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="178"/>
+                    <RowDefinition Height="88"/>
+                    <RowDefinition />
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,24,0,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="55*"/>
+                        <RowDefinition Height="45*"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+                    <Label x:Name="lblPace" Grid.Column="0" Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center" TextColor="Black" FontSize="30"/>
+                    <Label Text="PACE" Grid.Column="0" Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"/>
+                    <Frame x:Name="lblColor" BackgroundColor="Red" WidthRequest="-5" Grid.Column="1" Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center" CornerRadius="30" ></Frame>
+                    <Label Text="COLOR" Grid.Column="1" Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"/>
+                    <Frame Margin="16,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HasShadow="False" BackgroundColor="#5E8FFF" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="55*"/>
+                        <RowDefinition Height="45*"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+                    <Label x:Name="lblDistance" FontSize="40" TextColor="Black" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End"/>
+                    <Label Text="METERS" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
+                    <Frame Margin="16,0" Grid.Row="2" BackgroundColor="#5E8FFF" HasShadow="False"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60*"/>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="lblTimer" Text="02:30" FontSize="30" TextColor="Black" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End"/>
+                    <Label Text="CURRENT TIME" FontSize="18" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start"/>
+                    <Frame Margin="16,0" Grid.Row="2" BackgroundColor="#5E8FFF" HasShadow="False"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="8,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ImageButton x:Name="btnPlay" Clicked="btnPlay_Clicked" Source="playbutton" Grid.Column="0" Margin="8" BackgroundColor="GhostWhite" IsVisible="false" IsEnabled="False" />
+                    <ImageButton x:Name="btnPause" Clicked="btnPause_Clicked" Source="pausebutton" Grid.Column="1" Margin="8" BackgroundColor="GhostWhite" IsVisible="True" IsEnabled="True" />
+                    <ImageButton x:Name="btnStop" Clicked="btnStop_Clicked" Source="stopbutton" Grid.Column="2" Margin="8" BackgroundColor="GhostWhite" IsVisible="false" IsEnabled="False"/>
+                </Grid>
+                <Button Margin="24,16" TextColor="White" BackgroundColor="#2969FF" Text="Workout details" FontSize="18" Grid.Row="4" Clicked="Button_Clicked"/>
+            </Grid>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

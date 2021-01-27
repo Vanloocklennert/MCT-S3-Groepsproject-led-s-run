@@ -7,6 +7,8 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Leds_Run.models;
+using Leds_Run.repositories;
 
 namespace Leds_Run.views
 {
@@ -14,19 +16,33 @@ namespace Leds_Run.views
     public partial class StartPage : ContentPage
     {
 
+        List<Workout.Interval> defaultWorkouts;
+        List<string> WorkoutNames = new List<string>();
 
         public StartPage()
         {
             InitializeComponent();
-            ImgLeaderboard.ImageSource = ImageSource.FromResource("Leds_Run.Assets.LeaderbordIcon.png");
-            Start.Source = ImageSource.FromResource("Leds_Run.Assets.StartButton.png");
-            //Itemsource vand PckrWorkout invullen
-            //PckrWorkout.ItemsSource = ;
+            ShowWorkouts();
         }
 
+        private async void ShowWorkouts()
+        {         
+            defaultWorkouts = await RepoWorkout.GetDefaultWorkouts();
+            defaultWorkouts.AddRange(await RepoWorkout.GetChallenges());
+
+            foreach(Workout.Interval inter in defaultWorkouts)
+            {
+                WorkoutNames.Add(inter.Name);
+            }
+            PckrWorkout.ItemsSource = WorkoutNames;
+            PckrWorkout.SelectedIndex = 0;
+        }
         private void Start_Clicked(object sender, EventArgs e)
         {
-            //Kijken wat er geselecteerd is in PckrWorkout en meegeven naar de start workout pagina
+            Workout workout = new Workout();
+            workout.Intervals = new List<Workout.Interval>();
+            workout.Intervals.Add(defaultWorkouts[PckrWorkout.SelectedIndex]);
+            Navigation.PushAsync(new StartupPage(workout, EntryUsername.Text));
         }
 
         private void NewWorkout_Clicked(object sender, EventArgs e)
@@ -36,7 +52,7 @@ namespace Leds_Run.views
 
         private void ImgLeaderboard_Clicked(object sender, EventArgs e)
         {
-            //naar de leaderboard gaan
+            Navigation.PushAsync(new NavigationPage(new LeaderboardPage()));
         }
     }
 }
