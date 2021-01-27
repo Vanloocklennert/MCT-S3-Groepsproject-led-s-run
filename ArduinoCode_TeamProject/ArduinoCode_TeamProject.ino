@@ -1,71 +1,109 @@
-#include <Adafruit_NeoPixel.h>
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(43, 6);
-const double distanceOneLed = 1.6; // cm  
-int workoutData [10][2];
+#include <FastLED.h>
+#define NUM_LEDS 150
+#define DATA_PIN 6
+CRGB leds[NUM_LEDS];
+
+
+const double distanceOneLed = 10.5; // cm  
+float workoutData [10][4] = {NULL};
+int workoutDataColors[10][3] = {NULL};
+char red[3];
+char green[3];
+char blue[3];
+
 
  float  beginTime1;
  float beginTime2;
 
 void setup() {
-  strip.begin();
-  strip.setBrightness(50);
-  strip.clear();
-  strip.show();
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.setBrightness(50);
+  Serial1.begin(11800);
   Serial.begin(9600);
+  Serial1.setTimeout(5000);
 
   beginTime1 = millis();
   beginTime2 = millis(); 
- 
+
+  FastLED.clear();  // clear all pixel data
+  FastLED.show();
 }
 
 void loop() {
- if (Serial.available() > 0) {
-    String data = Serial.readStringUntil('#');
 
-    Serial.println(data);
-    String workoutVelocity = seperateString(data, '&', 0);
+    digitalWrite(8, HIGH);
+    digitalWrite(8, LOW);
+
+    if (Serial1.available()){
+    String data = Serial1.readStringUntil('%');
+
+    Serial.println("Data: " + data);
     String workoutTime = seperateString(data, '&', 1);
+    String workoutVelocity = seperateString(data, '&', 2);
+    String workoutColor = seperateString(data, '&', 3);
 
-    Serial.println(workoutVelocity);
-
-    for (int x = 0; x < 10; x++){
-        if(workoutData[x] == ""){
+    for (int x = 1; x < 10; x++){
+        Serial.println("test");
+        if(workoutData[x][0] == NULL){
             Serial.println(workoutVelocity);
             Serial.println(workoutTime);
-            workoutData[x][0] =   workoutVelocity.toFloat();
-            workoutData[x][1] = workoutTime.toFloat();
+            Serial.println(workoutColor);
+
+            String redString = workoutColor.substring(0,2);
+            String greenString = workoutColor.substring(2,4);
+            String blueString = workoutColor.substring(4,6);
+
+            redString.toCharArray(red, 3);
+            greenString.toCharArray(green, 3);
+            blueString.toCharArray(blue, 3);
+
+            workoutData[x][0] = workoutVelocity.toFloat();
+            workoutData[x][1] = millis() + workoutTime.toFloat();
+            workoutData[x][2] = millis();
+            workoutDataColors[x][0] = StrToHex(red);
+            workoutDataColors[x][1] = StrToHex(green);
+            workoutDataColors[x][2] = StrToHex(blue);
+            Serial.println(workoutTime.toFloat());
             break;
         }
-    } 
+    }
  }
 
 
+ for (int x = 1; x < 10; x++){
+    if (!workoutData[x][0] == NULL) {       
+    float elapsedTime = millis() - workoutData[x][2];
+    int elapsedLeds = round(elapsedTime / CalculateLedDelay(workoutData[x][0]));
+
+    if (elapsedLeds >= 150){
+      workoutData[x][2] = millis(); 
+    }
+
+    if (millis() >= workoutData[x][1]){
+        Serial.println(workoutData[x][1]);
+        Serial.println(millis());
+        workoutData[x][0] = NULL;
+        FastLED.clear();
+        FastLED.show();
+        break;
+    }
 
 
-float elapsedTime1 = millis() - beginTime1;
-float elapsedTime2 = millis() - beginTime2;
+    leds[elapsedLeds].setRGB(workoutDataColors[x][0],workoutDataColors[x][1],workoutDataColors[x][2]);
+    if (!Serial1.available()) FastLED.show();
+    leds[elapsedLeds].setRGB(0,0,0); 
+    }
+  
+ }
 
-int elapsedLeds = round(elapsedTime1 / 26);
-int elapsedLeds2 = round(elapsedTime2 / 25);
-
-
-if (elapsedLeds > 42) beginTime1 = millis();
-if (elapsedLeds2 > 42) beginTime2 = millis();
-
-strip.setPixelColor(elapsedLeds - 1, 0,0,0);
-strip.setPixelColor(elapsedLeds, 255,0,0);
-
-strip.setPixelColor(elapsedLeds2 - 1, 0,0,0);
-strip.setPixelColor(elapsedLeds2, 0,255,0);
-strip.show();
-
+delay(5);
 }
 
 
 
 
 float CalculateLedDelay(float velocity){
-    float velocityMeters = (velocity/3.6) * 100;
+    float velocityMeters = velocity * 100;
     float ledDelay = (velocityMeters / distanceOneLed);
     float ledDelaySecond = 1 / ledDelay;
     float ledDelayMs = ledDelaySecond * 1000;
@@ -92,10 +130,8 @@ String seperateString(String data, char separator, int index)
 }
 
 
-
-
-
-
-
-
+int StrToHex(char str[])
+{
+  return (int) strtol(str, NULL, 16);
+}
   
